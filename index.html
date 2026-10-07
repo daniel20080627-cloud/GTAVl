@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<ht  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRAND THEFT AUTO VI - 官方風格網站</title>
+  
+  <style>
+    /* ==========================================================================
+       STREAMING_CHUNK: Setting up CSS variables and global reset...
+       CSS 變數設定 (修改主題顏色、字體與間距的主要區域)
+       ========================================================================== */
+    :root {
+      /* 核心色彩 (Vice City 霓虹配色) */
+      --color-bg-dark: #0a0512;          /* 全局主背景色 (深紫黑) */
+      --color-bg-card: #150a26;          /* 卡片區塊背景色 */
+      --color-bg-glass: rgba(25, 12, 42, 0.75); /* 半透明玻璃質感背景 */
+      
+      --color-primary-pink: #ff2a8d;     /* 霓虹粉紫 (主亮色) */
+      --color-primary-cyan: #00f0ff;     /* 霓虹青藍 (輔助亮色) */
+      --color-accent-gold: #ffb700;     /* 點綴金黃色 */
+      
+      --color-text-main: #ffffff;         /* 主要文字顏色 */
+      --color-text-muted: #b3a5c9;       /* 次要/次階文字顏色 */
+      
+      /* 漸層色彩 */
+      --gradient-vi: linear-gradient(135deg, var(--color-primary-pink), #9a1fdd, var(--color-primary-cyan));
+      --gradient-gold: linear-gradient(135deg, #ffe57f, #ff9100);
+      
+      /* 區塊間距設定 (修改此處可調全站間距) */
+      --section-padding-desktop: 100px 5%; /* 桌機版區塊上下與左右 Padding */
+      --section-padding-mobile: 60px 20px;  /* 手機版區塊上下與左右 Padding */
+      --element-gap: 30px;                 /* 元件之間的預設間距 */
+      
+      /* 邊框圓角與陰影 */
+      --border-radius-sm: 8px;
+      --border-radius-lg: 18px;
+      --shadow-neon-pink: 0 0 25px rgba(255, 42, 141, 0.4);
+      --shadow-neon-cyan: 0 0 25px rgba(0, 240, 255, 0.3);
+    }
+
+    /* 基礎全局樣式重置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, "Helvetica Neue", Roboto, Arial, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-main);
+      overflow-x: hidden;
+    }
+
+    body {
+      background-color: var(--color-bg-dark);
+      line-height: 1.6;
+      width: 100%;
+    }
+
+    /* ==========================================================================
+       STREAMING_CHUNK: Defining layout containers and general utilities...
+       通用容器與類別
+       ========================================================================== */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* 霓虹漸層文字效果 */
+    .text-gradient {
+      background: var(--gradient-vi);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    /* 次要按鈕與主按鈕通用樣式 */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 32px;
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-radius: var(--border-radius-sm);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      outline: none;
+    }
+
+    .btn-primary {
+      background: var(--gradient-vi);
+      color: #fff;
+      box-shadow: var(--shadow-neon-pink);
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, var(--color-primary-cyan), var(--color-primary-pink));
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn-primary:hover::before {
+      opacity: 1;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.6);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(5px);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--color-primary-cyan);
+      color: var(--color-primary-cyan);
+      box-shadow: var(--shadow-neon-cyan);
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================================================
+       STREAMING_CHUNK: Styling the Navigation Bar...
+       導覽列 (Navbar) 樣式
+       ========================================================================== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: var(--color-bg-glass);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s ease;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 35px;
+    }
+
+    /* Rockstar 標誌圖示 */
+    .rockstar-logo {
+      width: 42px;
+      height: 42px;
+      background: var(--color-accent-gold);
+      color: #000;
+      font-weight: 900;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      text-decoration: none;
+      box-shadow: 0 0 15px rgba(255, 183, 0, 0.5);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--color-primary-cyan);
+    }
+
+    /* ==========================================================================
+       STREAMING_CHUNK: Styling Hero Section...
+       主視覺區塊 (Hero Section)
+       ========================================================================== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 20px 60px 20px;
+      background: radial-gradient(circle at center, rgba(255, 42, 141, 0.15) 0%, rgba(10, 5, 18, 0.95) 70%),
+                  radial-gradient(circle at 80% 20%, rgba(0, 240, 255, 0.12) 0%, transparent 50%);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* 模擬主視覺背景波浪與線條 */
+    .hero-grid-bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: 6px;
+      color: var(--color-primary-cyan);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    }
+
+    /* 純正 CSS 製作的 GTA VI 大型文字標誌 */
+    .gta-vi-logo {
+      font-size: clamp(4.5rem, 12vw, 9.5rem);
+      font-weight: 900;
+      font-style: italic;
+      line-height: 0.9;
+      letter-spacing: -2px;
+      margin-bottom: 25px;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #ffffff 0%, #ff80df 50%, var(--color-primary-pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(255, 42, 141, 0.6));
+      position: relative;
+    }
+
+    .gta-vi-logo span {
+      display: block;
+      font-size: 0.35em;
+      letter-spacing: 12px;
+      font-style: normal;
+      background: linear-gradient(180deg, #ffffff 0%, var(--color-text-muted) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-description {
+      font-size: 1.25rem;
+      color: var(--color-text-muted);
+      max-width: 650px;
+      margin: 0 auto 40px auto;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ==========================================================================
+       STREAMING_CHUNK: Styling Trailer Section...
+       預告片展示區 (Trailer Showcase)
+       ========================================================================== */
+    .section-trailer {
+      padding: var(--section-padding-desktop);
+      background: linear-gradient(180deg, var(--color-bg-dark) 0%, #120822 100%);
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    .section-desc {
+      color: var(--color-text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      border-radius: var(--border-radius-lg);
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), var(--shadow-neon-pink);
+      border: 1px solid rgba(255, 42, 141, 0.3);
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+
+    .video-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ==========================================================================
+       STREAMING_CHUNK: Styling Characters & Setting Section...
+       角色與世界觀卡片展示區 (Characters & Settings)
+       ========================================================================== */
+    .section-showcase {
+      padding: var(--section-padding-desktop);
+      background: var(--color-bg-dark);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 11fr));
+      gap: var(--element-gap);
+      margin-top: 40px;
+    }
+
+    .showcase-card {
+      background: var(--color-bg-card);
+      border-radius: var(--border-radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .showcase-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--color-primary-cyan);
+      box-shadow: var(--shadow-neon-cyan);
+    }
+
+    .card-image-box {
+      width: 100%;
+      height: 260px;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+
+    /* 模擬圖片懸停放大的視覺效果 */
+    .card-image-box::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(180deg, transparent 40%, var(--color-bg-card) 100%);
+    }
+
+    /* 假圖片占位漸層 (可替換真實圖片URL) */
+    .img-lucia {
+      background: linear-gradient(45deg, #3d0528, #e83e8c);
+    }
+    .img-vice-city {
+      background: linear-gradient(45deg, #052d3d, #00c6ff);
+    }
+    .img-neon-drive {
+      background: linear-gradient(45deg, #2b053d, #8a2be2);
+    }
+
+    .card-content {
+      padding: 25px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-tag {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--color-primary-pink);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .card-text {
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       STREAMING_CHUNK: Styling Newsletter & Footer...
+       電子報訂閱區與頁尾 (Newsletter & Footer)
+       ========================================================================== */
+    .section-newsletter {
+      padding: var(--section-padding-desktop);
+      background: radial-gradient(circle at 50% 50%, rgba(25, 12, 42, 1) 0%, var(--color-bg-dark) 100%);
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .newsletter-form {
+      display: flex;
+      max-width: 550px;
+      margin: 30px auto 0 auto;
+      gap: 12px;
+    }
+
+    .newsletter-input {
+      flex: 1;
+      padding: 16px 20px;
+      border-radius: var(--border-radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .newsletter-input:focus {
+      border-color: var(--color-primary-pink);
+    }
+
+    .footer {
+      background: #05020a;
+      padding: 50px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--color-primary-cyan);
+    }
+
+    .rating-box {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      display: inline-block;
+    }
+
+    /* ==========================================================================
+       STREAMING_CHUNK: Responsive styles for Mobile devices...
+       響應式 RWD 調整 (手機版適應)
+       ========================================================================== */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 15px 20px;
+      }
+      .nav-links {
+        display: none; /* 手機版簡化選單 */
+      }
+      .hero {
+        padding: 100px 15px 40px 15px;
+      }
+      .hero-subtitle {
+        font-size: 0.95rem;
+        letter-spacing: 3px;
+      }
+      .section-trailer, .section-showcase, .section-newsletter {
+        padding: var(--section-padding-mobile);
+      }
+      .newsletter-form {
+        flex-direction: column;
+      }
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 頂部導覽列 -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="#" class="rockstar-logo">R</a>
+      <ul class="nav-links">
+        <li><a href="#hero">首頁</a></li>
+        <li><a href="#trailer">預告片</a></li>
+        <li><a href="#showcase">探索 Leonida</a></li>
+        <li><a href="#newsletter">最新消息</a></li>
+      </ul>
+    </div>
+    <div>
+      <a href="#newsletter" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.85rem;">訂閱通知</a>
+    </div>
+  </nav>
+
+  <!-- 主視覺區域 (Hero Section) -->
+  <header id="hero" class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-content">
+      <p class="hero-subtitle">TRAILER 1 現已公開</p>
+      
+      <!-- GTA VI 文字標誌效果 -->
+      <h1 class="gta-vi-logo">
+        <span>Grand Theft Auto</span>
+        VI
+      </h1>
+      
+      <p class="hero-description">
+        歡迎來到 Leonida 州，探索 Vice City 的霓虹街道與廣袤大地。Grand Theft Auto VI 即將開啟最大規模、最具沉浸感的開放世界體驗。
+      </p>
+
+      <div class="hero-actions">
+        <a href="#trailer" class="btn btn-primary">觀賞預告片</a>
+        <a href="#showcase" class="btn btn-outline">探索遊戲世界</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 預告片專區 -->
+  <section id="trailer" class="section-trailer">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">官方預告片 <span class="text-gradient">#1</span></h2>
+        <p class="section-desc">感受 Vice City 陽光下的暗潮洶湧與極致視覺震撼</p>
+      </div>
+
+      <div class="video-wrapper">
+        <!-- 嵌入官方 YouTube 預告片 (若沒有網路可點擊直接前往 YouTube) -->
+        <iframe 
+          src="https://www.youtube.com/embed/QdBZY2fkU-0" 
+          title="Grand Theft Auto VI Trailer 1" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- 角色與地點卡片展示區 -->
+  <section id="showcase" class="section-showcase">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">走進 <span class="text-gradient">LEONIDA</span></h2>
+        <p class="section-desc">雙主角、霓虹夜景與危險的狂野境界</p>
+      </div>
+
+      <div class="card-grid">
+        <!-- 卡片 1 -->
+        <div class="showcase-card">
+          <div class="card-image-box img-lucia"></div>
+          <div class="card-content">
+            <div>
+              <span class="card-tag">主角人物</span>
+              <h3 class="card-title">Lucia & Jason</h3>
+              <p class="card-text">在充滿機會與風險的社會中，兩位主角將共同面對挑戰，開啟全新命運的故事篇章。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 卡片 2 -->
+        <div class="showcase-card">
+          <div class="card-image-box img-vice-city"></div>
+          <div class="card-content">
+            <div>
+              <span class="card-tag">經典場景</span>
+              <h3 class="card-title">Vice City 罪惡城市</h3>
+              <p class="card-text">從棕櫚樹林立的海灘，到繁華炫目的霓虹大道，Leonida 州充滿了極致的對比與活力。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 卡片 3 -->
+        <div class="showcase-card">
+          <div class="card-image-box img-neon-drive"></div>
+          <div class="card-content">
+            <div>
+              <span class="card-tag">開放世界</span>
+              <h3 class="card-title">野外與濕地生態</h3>
+              <p class="card-text">不僅僅是城市，無邊無際的自然生態系與沼澤地，蘊藏著無數待探索的秘密。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 電子報與更新訂閱 -->
+  <section id="newsletter" class="section-newsletter">
+    <div class="container">
+      <h2 class="section-title">第一時間掌握 <span class="text-gradient">最新情報</span></h2>
+      <p class="section-desc">訂閱 Rockstar 電子報，第一時間獲取發售日期、預購與遊戲詳情。</p>
+
+      <form class="newsletter-form" onsubmit="event.preventDefault(); alert('感謝訂閱！');">
+        <input type="email" class="newsletter-input" placeholder="輸入您的 Email 地址..." required>
+        <button type="submit" class="btn btn-primary">立即訂閱</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 頁尾 -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <a href="#" class="rockstar-logo">R</a>
+
+      <ul class="footer-links">
+        <li><a href="#">隱私權政策</a></li>
+        <li><a href="#">法律聲明</a></li>
+        <li><a href="#">Rockstar Support</a></li>
